@@ -1,0 +1,147 @@
+# DevTrack
+
+DevTrack is a minimal Django REST-style backend API for tracking engineering issues.
+
+## Features
+
+- Create and retrieve reporters
+- Create and retrieve engineering issues
+- Filter issues by status
+- JSON file-based data storage
+- OOP-based entity design
+- Inheritance and method overriding
+- Input validation
+
+## Project Structure
+
+devtrack/
+├── manage.py
+├── issues.json
+├── reporters.json
+├── devtrack/
+│   ├── settings.py
+│   └── urls.py
+└── issues/
+    ├── models.py
+    ├── views.py
+    └── urls.py
+
+## Requirements
+
+- Python 3.x
+- Django
+
+## Installation
+
+Clone the repository:
+
+git clone <your-github-repository-url>
+
+Navigate to the project:
+
+cd devtrack
+
+Create a virtual environment:
+
+python -m venv venv
+
+Activate it on Windows:
+
+venv\Scripts\activate
+
+Install Django:
+
+pip install django
+
+Run migrations:
+
+python manage.py migrate
+
+Start the server:
+
+python manage.py runserver
+
+The API will be available at:
+
+http://127.0.0.1:8000/
+
+## API Endpoints
+
+### Reporters
+
+POST /api/reporters/
+
+Creates a new reporter.
+
+GET /api/reporters/
+
+Returns all reporters.
+
+GET /api/reporters/?id=1
+
+Returns a reporter by ID.
+
+### Issues
+
+POST /api/issues/
+
+Creates a new issue.
+
+GET /api/issues/
+
+Returns all issues.
+
+GET /api/issues/?id=1
+
+Returns an issue by ID.
+
+GET /api/issues/?status=open
+
+Returns all issues with the specified status.
+
+## OOP Design
+
+BaseEntity is an abstract base class containing the validate() abstract method and a reusable to_dict() method.
+
+Reporter and Issue inherit from BaseEntity.
+
+CriticalIssue and LowPriorityIssue inherit from Issue and override the describe() method.
+
+When an issue is created, the priority determines which class is instantiated:
+
+- critical -> CriticalIssue
+- low -> LowPriorityIssue
+- medium/high -> Issue
+
+This demonstrates inheritance and polymorphism.
+
+## Design Decision
+
+JSON files were used instead of Django's database models because the assignment specifically requires data to be stored in issues.json and reporters.json. The OOP classes are therefore kept separate from Django's persistence layer.
+
+## Postman Testing
+
+Postman was used to test all API endpoints.
+
+The README contains screenshots showing:
+
+1. Successful issue creation with HTTP 201.
+2. Validation failure with HTTP 400.
+
+## Example Success Response
+
+{
+    "id": 1,
+    "title": "Login button not working on mobile",
+    "description": "Users on iOS 17 cannot tap the login button",
+    "status": "open",
+    "priority": "critical",
+    "reporter_id": 1,
+    "message": "[URGENT] Login button not working on mobile — needs immediate attention"
+}
+
+## Example Validation Failure
+
+{
+    "error": "Title cannot be empty"
+}
